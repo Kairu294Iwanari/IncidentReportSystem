@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_IncidentLayout.cshtml";
+}
+
+<div ng-init="initialRun()">
+</div>
+
+<script>
+    setTimeout(function () {
+        var data = sessionStorage.getItem("CurrentUser");
+        if (!data) {
+
+            window.location.href = "/Incident/LoginPage";
+            return;
+        }
+        var user = JSON.parse(data);
+        if (user.Role === "Resident") {
+            window.location.href = "/Incident/ResidentDashboard";
+        } else if (user.Role === "Barangay Official") {
+            window.location.href = "/Incident/OfficialDashboard";
+        } else if (user.Role === "Admin") {
+            window.location.href = "/Incident/AdminDashboard";
+        } else {
+            window.location.href = "/Incident/LoginPage";
+        }
+    }, 300);</script>

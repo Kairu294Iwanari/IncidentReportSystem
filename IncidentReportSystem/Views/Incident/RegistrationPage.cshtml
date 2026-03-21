@@ -1,0 +1,339 @@
+﻿@{
+    ViewBag.Title = "Registration";
+    Layout = "~/Views/Shared/_IncidentLayout.cshtml";
+}
+
+<style>
+    body {
+        margin: 0;
+        background: #f8fafc;
+        font-family: sans-serif;
+    }
+
+    .wrap {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    .left {
+        flex: 1;
+        background: linear-gradient(135deg, #0f172a, #1e3a5f, #c2410c);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px;
+    }
+
+        .left h1 {
+            color: #fff;
+            font-size: 40px;
+            font-weight: 800;
+            text-align: center;
+            margin: 0 0 14px;
+        }
+
+        .left p {
+            color: rgba(255,255,255,0.65);
+            font-size: 15px;
+            text-align: center;
+            margin: 0;
+        }
+
+    .right {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        overflow-y: auto;
+    }
+
+    .box {
+        width: 100%;
+        max-width: 500px;
+        padding: 10px 0;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .logo-icon {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logo-name {
+        font-size: 15px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+        .logo-name span {
+            color: #3b82f6;
+        }
+
+    h2 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 4px;
+    }
+
+    .sub {
+        font-size: 13px;
+        color: #64748b;
+        margin: 0 0 16px;
+    }
+
+    select.browser-default {
+        margin-top: 10px;
+        border: 1px solid #9e9e9e;
+        border-radius: 4px;
+        height: 3rem;
+        width: calc(100% - 3rem);
+        margin-left: 3rem;
+    }
+
+    .btn-green {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background: #16a34a;
+        color: #fff !important;
+        font-size: 15px;
+        font-weight: 600;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 8px;
+        margin-bottom: 10px;
+        text-decoration: none;
+        border: none;
+        font-family: inherit;
+        box-sizing: border-box;
+    }
+
+    .btn-red {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background: #dc2626;
+        color: #fff !important;
+        font-size: 15px;
+        font-weight: 600;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-bottom: 12px;
+        text-decoration: none;
+        border: none;
+        font-family: inherit;
+        box-sizing: border-box;
+    }
+
+    .btn-blue {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background: #2563eb;
+        color: #fff !important;
+        font-size: 15px;
+        font-weight: 600;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-bottom: 14px;
+        text-decoration: none;
+        border: none;
+        font-family: inherit;
+        box-sizing: border-box;
+    }
+
+    .bottom {
+        text-align: center;
+        font-size: 13px;
+        color: #6b7280;
+        margin-top: 4px;
+    }
+
+        .bottom a {
+            color: #2563eb;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+    .guide {
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        padding: 12px 14px;
+        margin-top: 14px;
+        font-size: 12px;
+        color: #1e40af;
+        line-height: 1.7;
+    }
+
+    @@media (max-width: 768px) {
+        .left {
+            display: none;
+        }
+
+        .right {
+            padding: 28px 20px;
+        }
+    }
+</style>
+
+<div class="wrap" ng-init="initialRun()">
+
+    <div class="left">
+        <h1>Your voice matters in our community.</h1>
+        <p>Register and start reporting incidents in your barangay.</p>
+    </div>
+
+    <div class="right">
+        <div class="box">
+
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="18" height="18" fill="none" stroke="white" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    </svg>
+                </div>
+                <div class="logo-name">Barangay <span>IRS</span></div>
+            </div>
+
+            <h2>Create an account</h2>
+            <p class="sub">Fill in your details to get started</p>
+
+            <form class="col s12">
+
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">person</i>
+                        <input id="icon_fname" type="text" class="validate" ng-model="Fname" maxlength="50" placeholder="ex. Kairu">
+                        <label for="icon_fname">First Name</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">person_outline</i>
+                        <input id="icon_mname" type="text" class="validate" ng-model="Mname" maxlength="50" placeholder="ex. Sargan">
+                        <label for="icon_mname">Middle Name</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">people</i>
+                        <input id="icon_lname" type="text" class="validate" ng-model="Lname" maxlength="50" placeholder="ex. Iwanari">
+                        <label for="icon_lname">Last Name</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">person_pin</i>
+                        <input id="icon_uname" type="text" class="validate" ng-model="Uname" maxlength="30" placeholder="ex. KaIwanari">
+                        <label for="icon_uname">Username</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s6" style="position:relative;">
+                        <i class="material-icons prefix">lock</i>
+                        <input id="icon_pass" type="password" class="validate" ng-model="Pname" maxlength="16" placeholder="Min. 8 chars">
+                        <label for="icon_pass">Password</label>
+                        <i class="material-icons" id="togglePass" style="position:absolute; right:10px; top:12px; cursor:pointer; color:#757575;">visibility</i>
+                    </div>
+                    <div class="input-field col s6" style="position:relative;">
+                        <i class="material-icons prefix">lock_outline</i>
+                        <input id="icon_cpass" type="password" class="validate" ng-model="ConfirmPass" maxlength="16" placeholder="Re-enter">
+                        <label for="icon_cpass">Confirm Password</label>
+                        <i class="material-icons" id="toggleCPass" style="position:absolute; right:10px; top:12px; cursor:pointer; color:#757575;">visibility</i>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">phone</i>
+                        <input id="icon_phone" type="tel" class="validate" ng-model="Phone" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="+63">
+                        <label for="icon_phone">Phone Number</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">assignment_ind</i>
+                        <select class="browser-default" ng-model="Role">
+                            <option value="" disabled selected>Select your role</option>
+                            <option value="Resident">Resident</option>
+                            <option value="Barangay Official">Barangay Official</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">home</i>
+                        <input id="icon_address" type="text" class="validate" ng-model="Address" maxlength="200" placeholder="ex. 1171 G. Unida St. Extension, Baclaran Paranaque City">
+                        <label for="icon_address">Home Address</label>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 0;">
+                    <div class="col s6">
+                        <button type="button" class="btn-green" ng-click="addFunc()">Create Account</button>
+                    </div>
+                    <div class="col s6">
+                        <button type="button" class="btn-red" ng-click="delFunc()">Clear Fields</button>
+                    </div>
+                </div>
+
+                <div ng-show="showLogin">
+                    <a class="btn-blue" href="/Incident/LoginPage">Go to Login</a>
+                </div>
+
+                <div class="bottom">
+                    Already have an account?&nbsp;<a href="/Incident/LoginPage">Sign in here</a>
+                </div>
+
+                <div class="guide">
+                    <strong>Role Guide:</strong><br>
+                    <strong>Resident</strong>: Submit and track your own reports.<br>
+                    <strong>Barangay Official</strong>: View all reports and update status.<br>
+                    <strong>Admin</strong>: Assign officials and delete false reports.
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('togglePass').addEventListener('click', function () {
+        var input = document.getElementById('icon_pass');
+        if (input.type === 'password') {
+            input.type = 'text';
+            this.textContent = 'visibility_off';
+        } else {
+            input.type = 'password';
+            this.textContent = 'visibility';
+        }
+    });
+
+    document.getElementById('toggleCPass').addEventListener('click', function () {
+        var input = document.getElementById('icon_cpass');
+        if (input.type === 'password') {
+            input.type = 'text';
+            this.textContent = 'visibility_off';
+        } else {
+            input.type = 'password';
+            this.textContent = 'visibility';
+        }
+    });
+</script>

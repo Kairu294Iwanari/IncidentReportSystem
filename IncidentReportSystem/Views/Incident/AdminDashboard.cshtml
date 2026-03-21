@@ -1,0 +1,302 @@
+﻿@{
+    ViewBag.Title = "Admin Dashboard";
+    Layout = "~/Views/Shared/_IncidentLayout.cshtml";
+}
+
+<style>
+    body {
+        margin: 0;
+        background: #f1f5f9;
+    }
+
+    .nav {
+        background: #0f172a;
+        height: 60px;
+        padding: 0 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .nav-logo {
+        width: 34px;
+        height: 34px;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #fff;
+    }
+
+        .nav-title span {
+            color: #60a5fa;
+        }
+
+    .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .nav-user {
+        font-size: 13px;
+        color: #94a3b8;
+    }
+
+        .nav-user strong {
+            color: #e2e8f0;
+        }
+
+    .badge {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 20px;
+        background: #fef3c7;
+        color: #b45309;
+    }
+
+    .btn-logout {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: #ef4444;
+        color: #fff;
+        border: none;
+        padding: 7px 14px;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-logout:hover {
+            background: #dc2626;
+        }
+
+    .page {
+        padding: 28px;
+    }
+
+    .banner {
+        background: linear-gradient(135deg, #b45309, #f59e0b);
+        border-radius: 12px;
+        padding: 24px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+    }
+
+        .banner h2 {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 4px;
+        }
+
+        .banner p {
+            color: rgba(255,255,255,0.85);
+            font-size: 13px;
+            margin: 0;
+        }
+
+    .banner-icon {
+        width: 54px;
+        height: 54px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #64748b;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin: 0 0 12px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
+    }
+
+    .card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        border: 1px solid #e2e8f0;
+        text-decoration: none;
+        display: block;
+        transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+
+    .card-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+    }
+
+    .i-indigo {
+        background: #e0e7ff;
+    }
+
+    .i-orange {
+        background: #ffedd5;
+    }
+
+    .i-yellow {
+        background: #fef3c7;
+    }
+
+    .i-red {
+        background: #fee2e2;
+    }
+
+    .card h3 {
+        font-size: 14px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 5px;
+    }
+
+    .card p {
+        font-size: 12px;
+        color: #64748b;
+        margin: 0 0 12px;
+        line-height: 1.5;
+    }
+
+    .card span {
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .c-indigo {
+        color: #4338ca;
+    }
+
+    .c-orange {
+        color: #ea580c;
+    }
+
+    .c-yellow {
+        color: #d97706;
+    }
+
+    .c-red {
+        color: #dc2626;
+    }
+</style>
+
+<div ng-init="initialRun()">
+
+    <div class="nav">
+        <div class="nav-left">
+            <div class="nav-logo">
+                <svg width="16" height="16" fill="none" stroke="white" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                </svg>
+            </div>
+            <div class="nav-title">Barangay <span>IRS</span></div>
+        </div>
+        <div class="nav-right">
+            <div class="nav-user">Hello, <strong>{{currentUser.FirstName}} {{currentUser.LastName}}</strong></div>
+            <span class="badge">Admin</span>
+            <button class="btn-logout" ng-click="logoutFunc()">Logout</button>
+        </div>
+    </div>
+
+    <div class="page">
+
+        <div class="banner">
+            <div>
+                <h2>Welcome, {{currentUser.FirstName}}!</h2>
+                <p>Manage all reports, users, and assignments.</p>
+            </div>
+            <div class="banner-icon">
+                <svg width="26" height="26" fill="none" stroke="white" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+            </div>
+        </div>
+
+        <p class="label">Management</p>
+        <div class="grid">
+
+            <a href="" class="card">
+                <div class="card-icon i-indigo">
+                    <svg width="20" height="20" fill="none" stroke="#4338ca" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    </svg>
+                </div>
+                <h3>All Reports</h3>
+                <p>View, assign, and delete all reports.</p>
+                <span class="c-indigo">View All Reports →</span>
+            </a>
+
+            <a href="" class="card">
+                <div class="card-icon i-orange">
+                    <svg width="20" height="20" fill="none" stroke="#ea580c" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    </svg>
+                </div>
+                <h3>Manage Users</h3>
+                <p>View all registered residents and officials.</p>
+                <span class="c-orange">Manage Users →</span>
+            </a>
+
+            <a href="" class="card">
+                <div class="card-icon i-yellow">
+                    <svg width="20" height="20" fill="none" stroke="#d97706" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    </svg>
+                </div>
+                <h3>Assign Officials</h3>
+                <p>Assign barangay officials to handle reports.</p>
+                <span class="c-yellow">Go to Reports →</span>
+            </a>
+
+            <a href="" class="card">
+                <div class="card-icon i-red">
+                    <svg width="20" height="20" fill="none" stroke="#dc2626" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    </svg>
+                </div>
+                <h3>Delete Reports</h3>
+                <p>Remove false or duplicate reports.</p>
+                <span class="c-red">Go to Reports →</span>
+            </a>
+
+        </div>
+
+    </div>
+</div>

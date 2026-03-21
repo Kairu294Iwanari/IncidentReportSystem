@@ -1,0 +1,263 @@
+﻿@{
+    ViewBag.Title = "Resident Dashboard";
+    Layout = "~/Views/Shared/_IncidentLayout.cshtml";
+}
+
+<style>
+    body {
+        margin: 0;
+        background: #f1f5f9;
+    }
+
+    .nav {
+        background: #0f172a;
+        height: 60px;
+        padding: 0 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .nav-logo {
+        width: 34px;
+        height: 34px;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #fff;
+    }
+
+        .nav-title span {
+            color: #60a5fa;
+        }
+
+    .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .nav-user {
+        font-size: 13px;
+        color: #94a3b8;
+    }
+
+        .nav-user strong {
+            color: #e2e8f0;
+        }
+
+    .badge {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 20px;
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .btn-logout {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: #ef4444;
+        color: #fff;
+        border: none;
+        padding: 7px 14px;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-logout:hover {
+            background: #dc2626;
+        }
+
+    .page {
+        padding: 28px;
+    }
+
+    .banner {
+        background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+        border-radius: 12px;
+        padding: 24px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+    }
+
+        .banner h2 {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 4px;
+        }
+
+        .banner p {
+            color: rgba(255,255,255,0.8);
+            font-size: 13px;
+            margin: 0;
+        }
+
+    .banner-icon {
+        width: 54px;
+        height: 54px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #64748b;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin: 0 0 12px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
+    }
+
+    .card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        border: 1px solid #e2e8f0;
+        text-decoration: none;
+        display: block;
+        transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+
+    .card-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+    }
+
+    .i-blue {
+        background: #dbeafe;
+    }
+
+    .i-green {
+        background: #dcfce7;
+    }
+
+    .card h3 {
+        font-size: 14px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 5px;
+    }
+
+    .card p {
+        font-size: 12px;
+        color: #64748b;
+        margin: 0 0 12px;
+        line-height: 1.5;
+    }
+
+    .card span {
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .c-blue {
+        color: #2563eb;
+    }
+
+    .c-green {
+        color: #16a34a;
+    }
+</style>
+
+<div ng-init="initialRun()">
+
+    <div class="nav">
+        <div class="nav-left">
+            <div class="nav-logo">
+                <svg width="16" height="16" fill="none" stroke="white" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+            </div>
+            <div class="nav-title">Barangay <span>IRS</span></div>
+        </div>
+        <div class="nav-right">
+            <div class="nav-user">Hello, <strong>{{currentUser.FirstName}} {{currentUser.LastName}}</strong></div>
+            <span class="badge">Resident</span>
+            <button class="btn-logout" ng-click="logoutFunc()">Logout</button>
+        </div>
+    </div>
+
+    <div class="page">
+
+        <div class="banner">
+            <div>
+                <h2>Welcome, {{currentUser.FirstName}}!</h2>
+                <p>Submit a new report or track your existing ones.</p>
+            </div>
+            <div class="banner-icon">
+                <svg width="26" height="26" fill="none" stroke="white" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+            </div>
+        </div>
+
+        <p class="label">My Actions</p>
+        <div class="grid">
+
+            <a href="" class="card">
+                <div class="card-icon i-blue">
+                    <svg width="20" height="20" fill="none" stroke="#2563eb" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    </svg>
+                </div>
+                <h3>Submit Report</h3>
+                <p>Log a new incident in your barangay.</p>
+                <span class="c-blue">Go to Submit Report →</span>
+            </a>
+
+            <a href="" class="card">
+                <div class="card-icon i-green">
+                    <svg width="20" height="20" fill="none" stroke="#16a34a" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    </svg>
+                </div>
+                <h3>My Reports</h3>
+                <p>Track the status of your submitted reports.</p>
+                <span class="c-green">View My Reports →</span>
+            </a>
+
+        </div>
+
+    </div>
+</div>
