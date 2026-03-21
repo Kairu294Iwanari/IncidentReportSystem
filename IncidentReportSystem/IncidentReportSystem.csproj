@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -49,10 +50,10 @@
       <HintPath>..\packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Google.Protobuf, Version=3.6.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.6.1\lib\net45\Google.Protobuf.dll</HintPath>
@@ -149,6 +150,37 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Context\IncidentReportContext.cs" />
+    <Compile Include="Models\Maps\tbl_account_statuses_map.cs" />
+    <Compile Include="Models\Maps\tbl_assignments_map.cs" />
+    <Compile Include="Models\Maps\tbl_audit_logs_map.cs" />
+    <Compile Include="Models\Maps\tbl_evidence_files_map.cs" />
+    <Compile Include="Models\Maps\tbl_incidents_map.cs" />
+    <Compile Include="Models\Maps\tbl_incident_categories_map.cs" />
+    <Compile Include="Models\Maps\tbl_incident_replies_map.cs" />
+    <Compile Include="Models\Maps\tbl_incident_statuses_map.cs" />
+    <Compile Include="Models\Maps\tbl_notifications_map.cs" />
+    <Compile Include="Models\Maps\tbl_permissions_map.cs" />
+    <Compile Include="Models\Maps\tbl_priority_levels_map.cs" />
+    <Compile Include="Models\Maps\tbl_roles_map.cs" />
+    <Compile Include="Models\Maps\tbl_role_permissions_map.cs" />
+    <Compile Include="Models\Maps\tbl_satisfaction_ratings_map.cs" />
+    <Compile Include="Models\Maps\tbl_users_map.cs" />
+    <Compile Include="Models\Tables\tbl_account_statuses_model.cs" />
+    <Compile Include="Models\Tables\tbl_assignments_model.cs" />
+    <Compile Include="Models\Tables\tbl_audit_logs_model.cs" />
+    <Compile Include="Models\Tables\tbl_evidence_files_model.cs" />
+    <Compile Include="Models\Tables\tbl_incidents_model.cs" />
+    <Compile Include="Models\Tables\tbl_incident_categories_model.cs" />
+    <Compile Include="Models\Tables\tbl_incident_replies_model.cs" />
+    <Compile Include="Models\Tables\tbl_incident_statuses_model.cs" />
+    <Compile Include="Models\Tables\tbl_notifications_model.cs" />
+    <Compile Include="Models\Tables\tbl_permissions_model.cs" />
+    <Compile Include="Models\Tables\tbl_priority_levels_model.cs" />
+    <Compile Include="Models\Tables\tbl_roles_model.cs" />
+    <Compile Include="Models\Tables\tbl_role_permissions_model.cs" />
+    <Compile Include="Models\Tables\tbl_satisfaction_ratings_model.cs" />
+    <Compile Include="Models\Tables\tbl_users_model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1002,7 +1034,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -1070,5 +1101,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
   </Target>
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
 </Project>

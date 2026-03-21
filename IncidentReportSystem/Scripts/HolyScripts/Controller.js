@@ -150,4 +150,23 @@
         });
     };
 
+    $scope.UpsertFunc = function () {
+
+        var userInfo = {
+            "FirstName": $scope.FirstName,
+            "MiddleName": $scope.MiddleName,
+            "LastName": $scope.LastName,
+            "Username": $scope.Username,
+            "PasswordHash": $scope.Pname,
+            "PhoneNumber": $scope.PhoneNumber,
+            "Address": $scope.Address,
+            "RoleID": $scope.Role
+        }
+
+        var upsertData = IncidentReportSystemService.UpsertService();
+        upsertData.then(function (returnedData) {
+            alert(returnedData.data);
+        })
+    }
+        
 });

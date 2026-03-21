@@ -13,4 +13,12 @@
         sessionStorage.removeItem("CurrentUser");
     };
 
+    this.UpsertService = function (userInfo) {
+        var response = $http({
+            url: "/Incident/UpsertUsers",
+            method: "post"
+            data: userInfo
+        })
+        return response;
+    }
 });
