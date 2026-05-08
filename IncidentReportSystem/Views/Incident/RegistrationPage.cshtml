@@ -95,69 +95,61 @@
         margin: 0 0 16px;
     }
 
-    select.browser-default {
-        margin-top: 10px;
-        border: 1px solid #9e9e9e;
-        border-radius: 4px;
-        height: 3rem;
-        width: calc(100% - 3rem);
-        margin-left: 3rem;
+    .btn-green, .btn-red, .btn-blue {
+        display: block;
+        width: 100%;
+        text-align: center;
+        color: #fff !important;
+        font-size: 15px;
+        font-weight: 600;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        text-decoration: none;
+        border: none;
+        box-sizing: border-box;
+        transition: background-color 0.2s ease;
     }
 
     .btn-green {
-        display: block;
-        width: 100%;
-        text-align: center;
-        background: #16a34a;
-        color: #fff !important;
-        font-size: 15px;
-        font-weight: 600;
-        padding: 12px;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-top: 8px;
-        margin-bottom: 10px;
-        text-decoration: none;
-        border: none;
-        font-family: inherit;
-        box-sizing: border-box;
+        background-color: #16a34a;
     }
+
+        .btn-green:hover {
+            background-color: #14532d !important;
+        }
 
     .btn-red {
-        display: block;
-        width: 100%;
-        text-align: center;
-        background: #dc2626;
-        color: #fff !important;
-        font-size: 15px;
-        font-weight: 600;
-        padding: 12px;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-bottom: 12px;
-        text-decoration: none;
-        border: none;
-        font-family: inherit;
-        box-sizing: border-box;
+        background-color: #dc2626;
     }
 
+        .btn-red:hover {
+            background-color: #7f1d1d !important;
+        }
+
     .btn-blue {
-        display: block;
-        width: 100%;
-        text-align: center;
-        background: #2563eb;
-        color: #fff !important;
-        font-size: 15px;
-        font-weight: 600;
-        padding: 12px;
-        border-radius: 8px;
-        cursor: pointer;
+        background-color: #2563eb;
+        margin-top: 14px;
         margin-bottom: 14px;
-        text-decoration: none;
-        border: none;
-        font-family: inherit;
-        box-sizing: border-box;
     }
+
+        .btn-blue:hover {
+            background-color: #1e3a8a !important;
+        }
+
+    .action-row {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 100;
+    }
+
+        .action-row button {
+            flex: 1;
+            margin: 0;
+        }
 
     .bottom {
         text-align: center;
@@ -192,22 +184,43 @@
             padding: 28px 20px;
         }
     }
+
+    .error-border {
+        border-bottom: 2px solid #ef4444 !important;
+        box-shadow: 0 1px 0 0 #ef4444 !important;
+    }
+
+    .req {
+        color: #ef4444;
+        font-weight: bold;
+    }
+
+    .custom-role-select {
+        display: block !important;
+        width: calc(100% - 3rem) !important;
+        margin-left: 3rem !important;
+        margin-top: 10px !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 4px !important;
+        height: 45px !important;
+        background-color: white !important;
+        padding-left: 10px !important;
+        outline: none !important;
+        cursor: pointer;
+    }
 </style>
 
 <div class="wrap" ng-init="initialRun()">
-
     <div class="left">
         <h1>Your voice matters in our community.</h1>
         <p>Register and start reporting incidents in your barangay.</p>
     </div>
-
     <div class="right">
         <div class="box">
-
             <div class="logo">
                 <div class="logo-icon">
                     <svg width="18" height="18" fill="none" stroke="white" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
                     </svg>
                 </div>
                 <div class="logo-name">Barangay <span>IRS</span></div>
@@ -217,16 +230,15 @@
             <p class="sub">Fill in your details to get started</p>
 
             <form class="col s12">
-
                 <div class="row">
                     <div class="input-field col s6">
                         <i class="material-icons prefix">person</i>
-                        <input id="icon_fname" type="text" class="validate" ng-model="Fname" maxlength="50" placeholder="ex. Kairu">
-                        <label for="icon_fname">First Name</label>
+                        <input id="icon_fname" type="text" class="validate" ng-model="FirstName" maxlength="50" placeholder="ex. Kairu" ng-class="{'error-border': submitted && !FirstName}">
+                        <label for="icon_fname">First Name <span class="req">*</span></label>
                     </div>
                     <div class="input-field col s6">
                         <i class="material-icons prefix">person_outline</i>
-                        <input id="icon_mname" type="text" class="validate" ng-model="Mname" maxlength="50" placeholder="ex. Sargan">
+                        <input id="icon_mname" type="text" class="validate" ng-model="MiddleName" maxlength="50" placeholder="ex. Sargan">
                         <label for="icon_mname">Middle Name</label>
                     </div>
                 </div>
@@ -234,27 +246,27 @@
                 <div class="row">
                     <div class="input-field col s6">
                         <i class="material-icons prefix">people</i>
-                        <input id="icon_lname" type="text" class="validate" ng-model="Lname" maxlength="50" placeholder="ex. Iwanari">
-                        <label for="icon_lname">Last Name</label>
+                        <input id="icon_lname" type="text" class="validate" ng-model="LastName" maxlength="50" placeholder="ex. Iwanari" ng-class="{'error-border': submitted && !LastName}">
+                        <label for="icon_lname">Last Name <span class="req">*</span></label>
                     </div>
                     <div class="input-field col s6">
                         <i class="material-icons prefix">person_pin</i>
-                        <input id="icon_uname" type="text" class="validate" ng-model="Uname" maxlength="30" placeholder="ex. KaIwanari">
-                        <label for="icon_uname">Username</label>
+                        <input id="icon_uname" type="text" class="validate" ng-model="Username" maxlength="30" placeholder="ex. KaIwanari" ng-class="{'error-border': submitted && !Username}">
+                        <label for="icon_uname">Username <span class="req">*</span></label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="input-field col s6" style="position:relative;">
                         <i class="material-icons prefix">lock</i>
-                        <input id="icon_pass" type="password" class="validate" ng-model="Pname" maxlength="16" placeholder="Min. 8 chars">
-                        <label for="icon_pass">Password</label>
+                        <input id="icon_pass" type="password" class="validate" ng-model="Pname" maxlength="16" placeholder="Min. 8 chars" ng-class="{'error-border': submitted && !Pname}">
+                        <label for="icon_pass">Password <span class="req">*</span></label>
                         <i class="material-icons" id="togglePass" style="position:absolute; right:10px; top:12px; cursor:pointer; color:#757575;">visibility</i>
                     </div>
                     <div class="input-field col s6" style="position:relative;">
                         <i class="material-icons prefix">lock_outline</i>
-                        <input id="icon_cpass" type="password" class="validate" ng-model="ConfirmPass" maxlength="16" placeholder="Re-enter">
-                        <label for="icon_cpass">Confirm Password</label>
+                        <input id="icon_cpass" type="password" class="validate" ng-model="ConfirmPass" maxlength="16" placeholder="Re-enter" ng-class="{'error-border': submitted && !ConfirmPass}">
+                        <label for="icon_cpass">Confirm Password <span class="req">*</span></label>
                         <i class="material-icons" id="toggleCPass" style="position:absolute; right:10px; top:12px; cursor:pointer; color:#757575;">visibility</i>
                     </div>
                 </div>
@@ -262,35 +274,31 @@
                 <div class="row">
                     <div class="input-field col s6">
                         <i class="material-icons prefix">phone</i>
-                        <input id="icon_phone" type="tel" class="validate" ng-model="Phone" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="+63">
-                        <label for="icon_phone">Phone Number</label>
+                        <input id="icon_phone" type="tel" class="validate" ng-model="Phonenumber" maxlength="20" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="+63" ng-class="{'error-border': submitted && !Phonenumber}">
+                        <label for="icon_phone">Phone Number <span class="req">*</span></label>
                     </div>
                     <div class="input-field col s6">
                         <i class="material-icons prefix">assignment_ind</i>
-                        <select class="browser-default" ng-model="Role">
+                        <select class="browser-default custom-role-select" ng-model="Role" ng-options="r.RoleID as r.RoleName for r in rolesList" ng-class="{'error-border': submitted && !Role}">
                             <option value="" disabled selected>Select your role</option>
-                            <option value="Resident">Resident</option>
-                            <option value="Barangay Official">Barangay Official</option>
-                            <option value="Admin">Admin</option>
                         </select>
+                        <label style="position: absolute; top: -25px; left: 3rem; font-size: 12px; color: #1e3a5f; font-weight: bold;">
+                            Role <span class="req">*</span>
+                        </label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">home</i>
-                        <input id="icon_address" type="text" class="validate" ng-model="Address" maxlength="200" placeholder="ex. 1171 G. Unida St. Extension, Baclaran Paranaque City">
-                        <label for="icon_address">Home Address</label>
+                        <input id="icon_address" type="text" class="validate" ng-model="Address" maxlength="200" placeholder="ex. 1171 G. Unida St. Extension..." ng-class="{'error-border': submitted && !Address}">
+                        <label for="icon_address">Home Address <span class="req">*</span></label>
                     </div>
                 </div>
 
-                <div class="row" style="margin-bottom: 0;">
-                    <div class="col s6">
-                        <button type="button" class="btn-green" ng-click="UpsertFunc()">Create Account</button>
-                    </div>
-                    <div class="col s6">
-                        <button type="button" class="btn-red" ng-click="delFunc()">Clear Fields</button>
-                    </div>
+                <div class="action-row">
+                    <button type="button" class="btn-green" ng-click="UpsertFunc()">Create Account</button>
+                    <button type="button" class="btn-red" ng-click="delFunc()">Clear Fields</button>
                 </div>
 
                 <div ng-show="showLogin">
@@ -305,11 +313,8 @@
                     <strong>Role Guide:</strong><br>
                     <strong>Resident</strong>: Submit and track your own reports.<br>
                     <strong>Barangay Official</strong>: View all reports and update status.<br>
-                    <strong>Admin</strong>: Assign officials and delete false reports.
                 </div>
-
             </form>
-
         </div>
     </div>
 </div>
@@ -317,23 +322,13 @@
 <script>
     document.getElementById('togglePass').addEventListener('click', function () {
         var input = document.getElementById('icon_pass');
-        if (input.type === 'password') {
-            input.type = 'text';
-            this.textContent = 'visibility_off';
-        } else {
-            input.type = 'password';
-            this.textContent = 'visibility';
-        }
+        if (input.type === 'password') { input.type = 'text'; this.textContent = 'visibility_off'; }
+        else { input.type = 'password'; this.textContent = 'visibility'; }
     });
 
     document.getElementById('toggleCPass').addEventListener('click', function () {
         var input = document.getElementById('icon_cpass');
-        if (input.type === 'password') {
-            input.type = 'text';
-            this.textContent = 'visibility_off';
-        } else {
-            input.type = 'password';
-            this.textContent = 'visibility';
-        }
+        if (input.type === 'password') { input.type = 'text'; this.textContent = 'visibility_off'; }
+        else { input.type = 'password'; this.textContent = 'visibility'; }
     });
 </script>

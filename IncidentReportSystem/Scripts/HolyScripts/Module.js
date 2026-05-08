@@ -1,1 +1,1 @@
-﻿var app = angular.module("IncidentApp", []);
+﻿var app = angular.module("IncidentApp", ['chart.js']);

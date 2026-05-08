@@ -2,11 +2,11 @@
     ViewBag.Title = "Admin Dashboard";
     Layout = "~/Views/Shared/_IncidentLayout.cshtml";
 }
-
 <style>
     body {
         margin: 0;
         background: #f1f5f9;
+        font-family: sans-serif;
     }
 
     .nav {
@@ -64,8 +64,9 @@
         font-weight: 600;
         padding: 3px 10px;
         border-radius: 20px;
-        background: #fef3c7;
-        color: #b45309;
+        background: #fef08a;
+        color: #854d0e;
+        display: inline-block;
     }
 
     .btn-logout {
@@ -80,6 +81,7 @@
         font-size: 13px;
         font-weight: 600;
         cursor: pointer;
+        transition: 0.2s;
     }
 
         .btn-logout:hover {
@@ -88,10 +90,11 @@
 
     .page {
         padding: 28px;
+        padding-bottom: 80px;
     }
 
     .banner {
-        background: linear-gradient(135deg, #b45309, #f59e0b);
+        background: linear-gradient(135deg, #8b5cf6, #c084fc);
         border-radius: 12px;
         padding: 24px 28px;
         display: flex;
@@ -108,7 +111,7 @@
         }
 
         .banner p {
-            color: rgba(255,255,255,0.85);
+            color: rgba(255,255,255,0.8);
             font-size: 13px;
             margin: 0;
         }
@@ -136,6 +139,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
         gap: 16px;
+        margin-bottom: 30px;
     }
 
     .card {
@@ -143,7 +147,6 @@
         border-radius: 10px;
         padding: 20px;
         border: 1px solid #e2e8f0;
-        text-decoration: none;
         display: block;
         transition: transform 0.15s, box-shadow 0.15s;
     }
@@ -153,149 +156,134 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.08);
         }
 
-    .card-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 9px;
+        .card h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #64748b;
+            margin: 0 0 10px;
+            text-transform: uppercase;
+        }
+
+        .card h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+        }
+
+    .panel-container {
+        background: #fff;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        margin-bottom: 30px;
+        padding: 20px;
+    }
+
+    .tabs {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 12px;
+        border-bottom: 2px solid #e2e8f0;
+        margin-bottom: 20px;
     }
 
-    .i-indigo {
-        background: #e0e7ff;
-    }
-
-    .i-orange {
-        background: #ffedd5;
-    }
-
-    .i-yellow {
-        background: #fef3c7;
-    }
-
-    .i-red {
-        background: #fee2e2;
-    }
-
-    .card h3 {
+    .tab-btn {
+        background: none;
+        border: none;
+        padding: 12px 24px;
         font-size: 14px;
-        font-weight: 700;
-        color: #0f172a;
-        margin: 0 0 5px;
-    }
-
-    .card p {
-        font-size: 12px;
-        color: #64748b;
-        margin: 0 0 12px;
-        line-height: 1.5;
-    }
-
-    .card span {
-        font-size: 12px;
         font-weight: 600;
+        color: #64748b;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-bottom: -2px;
+        border-bottom: 2px solid transparent;
     }
 
-    .c-indigo {
-        color: #4338ca;
-    }
+        .tab-btn.active {
+            color: #8b5cf6;
+            border-bottom: 2px solid #8b5cf6;
+        }
 
-    .c-orange {
-        color: #ea580c;
-    }
-
-    .c-yellow {
-        color: #d97706;
-    }
-
-    .c-red {
-        color: #dc2626;
-    }
+        .tab-btn:hover:not(.active) {
+            color: #0f172a;
+        }
 </style>
 
 <div ng-init="initialRun()">
-
     <div class="nav">
         <div class="nav-left">
             <div class="nav-logo">
                 <svg width="16" height="16" fill="none" stroke="white" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
                 </svg>
             </div>
             <div class="nav-title">Barangay <span>IRS</span></div>
         </div>
         <div class="nav-right">
             <div class="nav-user">Hello, <strong>{{currentUser.FirstName}} {{currentUser.LastName}}</strong></div>
-            <span class="badge">Admin</span>
-            <button class="btn-logout" ng-click="logoutFunc()">Logout</button>
+            <span class="badge">System Admin</span>
+            <button class="btn-logout" ng-click="logoutFunc()"><i class="material-icons" style="font-size: 16px; margin-right: 4px;">exit_to_app</i>Logout</button>
         </div>
     </div>
 
     <div class="page">
-
         <div class="banner">
             <div>
                 <h2>Welcome, {{currentUser.FirstName}}!</h2>
-                <p>Manage all Reports, Users, and Assignments.</p>
+                <p>Monitor high-level system analytics and overall volume.</p>
             </div>
             <div class="banner-icon">
                 <svg width="26" height="26" fill="none" stroke="white" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                 </svg>
             </div>
         </div>
 
-        <p class="label">Management</p>
-        <div class="grid">
+        <div class="tabs">
+            <button class="tab-btn" ng-class="{'active': adminActiveTab === 'users'}" ng-click="setAdminTab('users')">User Statistics</button>
+            <button class="tab-btn" ng-class="{'active': adminActiveTab === 'reports'}" ng-click="setAdminTab('reports')">Report Statistics</button>
+        </div>
 
-            <a href="" class="card">
-                <div class="card-icon i-indigo">
-                    <svg width="20" height="20" fill="none" stroke="#4338ca" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                    </svg>
+        <div ng-show="adminActiveTab === 'users'">
+            <p class="label">System Users Overview</p>
+            <div class="grid">
+                <div class="card" style="border-left: 4px solid #3b82f6;">
+                    <h3>Total Users</h3>
+                    <h2>{{ userStats.Total }}</h2>
                 </div>
-                <h3>All Reports</h3>
-                <p>View, assign, and delete all reports.</p>
-                <span class="c-indigo">View All Reports →</span>
-            </a>
-
-            <a href="" class="card">
-                <div class="card-icon i-orange">
-                    <svg width="20" height="20" fill="none" stroke="#ea580c" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                    </svg>
+                <div class="card" style="border-left: 4px solid #10b981;">
+                    <h3>Total Residents</h3>
+                    <h2>{{ userStats.Residents }}</h2>
                 </div>
-                <h3>Manage Users</h3>
-                <p>View all registered residents and officials.</p>
-                <span class="c-orange">Manage Users →</span>
-            </a>
-
-            <a href="" class="card">
-                <div class="card-icon i-yellow">
-                    <svg width="20" height="20" fill="none" stroke="#d97706" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                    </svg>
+                <div class="card" style="border-left: 4px solid #f59e0b;">
+                    <h3>Total Officials</h3>
+                    <h2>{{ userStats.Officials }}</h2>
                 </div>
-                <h3>Assign Officials</h3>
-                <p>Assign barangay officials to handle reports.</p>
-                <span class="c-yellow">Go to Reports →</span>
-            </a>
+            </div>
+        </div>
 
-            <a href="" class="card">
-                <div class="card-icon i-red">
-                    <svg width="20" height="20" fill="none" stroke="#dc2626" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                    </svg>
+        <div ng-show="adminActiveTab === 'reports'">
+            <p class="label">Total Incidents Summary</p>
+            <div class="grid">
+                <div class="card" ng-repeat="card in cardData">
+                    <h3>{{ card.StatusDesc }}</h3>
+                    <h2>{{ card.StatusCount }}</h2>
                 </div>
-                <h3>Delete Reports</h3>
-                <p>Remove false or duplicate reports.</p>
-                <span class="c-red">Go to Reports →</span>
-            </a>
+            </div>
 
+            <div class="row">
+                <div class="col s12 m6">
+                    <p class="label">System-Wide Status Distribution</p>
+                    <div class="panel-container">
+                        <div ng-if="statusData.length > 0">
+                            <canvas id="doughnut" class="chart chart-doughnut" chart-data="statusData" chart-labels="statusLabels" chart-options="chartOptions"></canvas>
+                        </div>
+                        <div ng-if="statusData.length == 0" style="text-align:center; padding: 40px 0; color:#94a3b8; font-size:13px;">
+                            No incident reports to display.
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>

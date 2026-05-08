@@ -166,6 +166,7 @@
     <Compile Include="Models\Maps\tbl_role_permissions_map.cs" />
     <Compile Include="Models\Maps\tbl_satisfaction_ratings_map.cs" />
     <Compile Include="Models\Maps\tbl_users_map.cs" />
+    <Compile Include="Models\StatusCardModel.cs" />
     <Compile Include="Models\Tables\tbl_account_statuses_model.cs" />
     <Compile Include="Models\Tables\tbl_assignments_model.cs" />
     <Compile Include="Models\Tables\tbl_audit_logs_model.cs" />
@@ -200,6 +201,8 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Chart.css" />
+    <Content Include="Content\Chart.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -207,6 +210,7 @@
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-aria.js" />
     <Content Include="Scripts\angular-aria.min.js" />
+    <Content Include="Scripts\angular-chart.min.js" />
     <Content Include="Scripts\angular-cookies.js" />
     <Content Include="Scripts\angular-cookies.min.js" />
     <Content Include="Scripts\angular-csp.css" />
@@ -235,6 +239,8 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-touch.min.js.map" />

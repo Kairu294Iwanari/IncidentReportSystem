@@ -1,86 +1,186 @@
-﻿using IncidentReportSystem.Models.Context;
+﻿using IncidentReportSystem.Models;
+using IncidentReportSystem.Models.Context;
 using IncidentReportSystem.Models.Tables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace IncidentReportingSystem.Controllers
 {
     public class IncidentController : Controller
     {
-        public ActionResult Index()
-        {
-            return View();
-        }
-        public ActionResult LoginPage()
-        {
-            return View();
-        }
-        public ActionResult RegistrationPage()
-        {
-            return View();
-        }
-        public ActionResult ResidentDashboard()
-        {
-            return View();
-        }
-        public ActionResult OfficialDashboard()
-        {
-            return View();
-        }
-        public ActionResult AdminDashboard()
-        {
-            return View();
-        }
+        public ActionResult Index() { return View(); }
+        public ActionResult LoginPage() { return View(); }
+        public ActionResult RegistrationPage() { return View(); }
+        public ActionResult ResidentDashboard() { return View(); }
+        public ActionResult OfficialDashboard() { return View(); }
+        public ActionResult AdminDashboard() { return View(); }
 
-        public string UpsertUsers()
+        [HttpPost]
+        public JsonResult LoginUser(tbl_users_model loginData)
         {
             try
             {
                 using (var connect = new IncidentReportContext())
                 {
-                    var getData = connect.tbl_users.Where(x => x.UserID == 2).FirstOrDefault();
-
-                    if (getData != null)
+                    var user = connect.tbl_users.FirstOrDefault(x => x.Username == loginData.Username && x.PasswordHash == loginData.PasswordHash);
+                    if (user != null)
                     {
-                        getData.LastLoginAt = DateTime.Now;
+                        if (user.AccountStatusID != 1) return Json(new { success = false, message = "Account suspended." });
+                        user.LastLoginAt = DateTime.Now;
                         connect.SaveChanges();
+                        user.PasswordHash = null;
+                        return Json(new { success = true, userData = user });
                     }
-                    else
-                    {
-
-                        var usersData = new tbl_users_model()
-                        {
-                            FirstName = "Kairu",
-                            MiddleName = "Sargan",
-                            LastName = "Iwanari",
-                            Username = "KaIwanari",
-                            PasswordHash = "June92003",
-                            PhoneNumber = 1234567890,
-                            Address = "Manila",
-                            RoleID = 1,
-                            AccountStatusID = 1,
-                            CreatedAt = DateTime.Now,
-                            LastLoginAt = DateTime.Now
-                        };
-                        connect.tbl_users.Add(usersData);
-                        connect.SaveChanges();
-
-                        return "Success";
-
-                    }
+                    return Json(new { success = false, message = "Invalid Username or Password." });
                 }
-            }catch(Exception ex)
-            {
-                return ErrorHandling(ex.Message, ex.StackTrace, ex.InnerException.ToString());
             }
+            catch (Exception ex) { return Json(new { success = false, message = $"System Error: {ex.Message}" }); }
         }
-        public string ErrorHandling(string eMessage, string eStackTrace, string eInnerException)
+
+        [HttpPost]
+        public string UpsertUsers(tbl_users_model userData)
         {
-            var errorMessage = $"Error has been encountered : {eMessage} | {eStackTrace} | {eInnerException}";
-            return "Unable to process your request at this time.";
+            try
+            {
+                using (var connect = new IncidentReportContext())
+                {
+                    if (connect.tbl_users.Any(x => x.Username == userData.Username)) return "Username is taken.";
+                    userData.CreatedAt = DateTime.Now;
+                    userData.LastLoginAt = DateTime.Now;
+                    userData.AccountStatusID = 1;
+                    connect.tbl_users.Add(userData);
+                    connect.SaveChanges();
+                    return "Success";
+                }
+            }
+            catch (Exception ex) { return $"System Error: {ex.Message}"; }
+        }
+
+        [HttpGet]
+        public JsonResult GetCardsStatus()
+        {
+            try
+            {
+                using (var connect = new IncidentReportContext())
+                {
+                    var getStatus = connect.tbl_incident_statuses.Select(x => x).ToList();
+                    var getIncidentStatus = (from incidents in connect.tbl_incidents
+                                             join status in connect.tbl_incident_statuses on incidents.StatusID equals status.StatusID
+                                             select new { incidents, status }).ToList();
+
+                    List<StatusCardModel> cardStatusData = new List<StatusCardModel>();
+                    foreach (var stat in getStatus)
+                    {
+                        var statData = getIncidentStatus.Where(x => x.status.StatusID == stat.StatusID).Count();
+                        cardStatusData.Add(new StatusCardModel() { StatusCount = statData, StatusDesc = stat.StatusName });
+                    }
+                    return Json(cardStatusData, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex) { return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet); }
+        }
+
+        [HttpGet]
+        public JsonResult GetDashboardData()
+        {
+            try
+            {
+                using (var connect = new IncidentReportContext())
+                {
+                    var dashboardData = (from incident in connect.tbl_incidents
+                                         join category in connect.tbl_incident_categories on incident.CategoryID equals category.CategoryID
+                                         join status in connect.tbl_incident_statuses on incident.StatusID equals status.StatusID
+                                         join user in connect.tbl_users on incident.ResidentID equals user.UserID
+                                         select new { incident, category, status, user }).ToList();
+                    return Json(dashboardData, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex) { return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet); }
+        }
+
+        [HttpGet]
+        public JsonResult GetDropdownData()
+        {
+            try
+            {
+                using (var connect = new IncidentReportContext())
+                {
+                    var categories = connect.tbl_incident_categories.Select(x => new { x.CategoryID, x.CategoryName }).ToList();
+                    var priorities = connect.tbl_priority_levels.Select(x => new { x.PriorityID, x.PriorityName }).ToList();
+                    return Json(new { categories, priorities }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex) { return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet); }
+        }
+
+        [HttpGet]
+        public JsonResult GetStatusList()
+        {
+            try
+            {
+                using (var connect = new IncidentReportContext())
+                {
+                    var statuses = connect.tbl_incident_statuses.Select(x => new { x.StatusID, x.StatusName }).ToList();
+                    return Json(statuses, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex) { return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet); }
+        }
+
+        [HttpGet]
+        public JsonResult GetUserStats()
+        {
+            try
+            {
+                using (var connect = new IncidentReportContext())
+                {
+                    var totalUsers = connect.tbl_users.Count();
+                    var residentsCount = connect.tbl_users.Count(x => x.RoleID == 1);
+                    var officialsCount = connect.tbl_users.Count(x => x.RoleID == 2);
+                    return Json(new { Total = totalUsers, Residents = residentsCount, Officials = officialsCount }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex) { return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet); }
+        }
+
+        [HttpPost]
+        public string SubmitIncidentReport(tbl_incidents_model incidentData)
+        {
+            try
+            {
+                using (var connect = new IncidentReportContext())
+                {
+                    incidentData.CreatedAt = DateTime.Now;
+                    incidentData.StatusID = 1;
+                    connect.tbl_incidents.Add(incidentData);
+                    connect.SaveChanges();
+                    return "Success";
+                }
+            }
+            catch (Exception ex) { return $"System Error: {ex.Message}"; }
+        }
+
+        [HttpPost]
+        public string UpdateIncidentStatus(tbl_incidents_model updateData)
+        {
+            try
+            {
+                using (var connect = new IncidentReportContext())
+                {
+                    var incident = connect.tbl_incidents.FirstOrDefault(x => x.IncidentID == updateData.IncidentID);
+                    if (incident != null)
+                    {
+                        incident.StatusID = updateData.StatusID;
+                        incident.UpdatedAt = DateTime.Now;
+                        connect.SaveChanges();
+                        return "Success";
+                    }
+                    return "Incident not found.";
+                }
+            }
+            catch (Exception ex) { return $"System Error: {ex.Message}"; }
         }
     }
 }

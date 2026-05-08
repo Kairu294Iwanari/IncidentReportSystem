@@ -3,17 +3,50 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        .main-content {
+            flex: 1 0 auto;
+        }
+
+        .global-footer {
+            background: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 13px;
+            border-top: 1px solid #1e293b;
+            width: 100%;
+            margin-top: auto;
+        }
+
+            .global-footer span {
+                color: #60a5fa;
+                font-weight: 600;
+            }
+    </style>
 </head>
 <body ng-app="IncidentApp" ng-controller="IncidentReportSystemController">
-    <div>
+
+    <div class="main-content">
         @RenderBody()
+    </div>
+
+    <div class="global-footer">
+        &copy; 2026 Barangay <span>IRS</span> Incident Report System. All Rights Reserved.
     </div>
 
     <script src="~/Scripts/jquery-3.7.0.min.js"></script>
@@ -21,9 +54,18 @@
     <script src="~/Scripts/HolyScripts/Module.js"></script>
     <script src="~/Scripts/HolyScripts/Service.js"></script>
     <script src="~/Scripts/HolyScripts/Controller.js"></script>
+    <script src="~/Scripts/Chart.min.js"></script>
+    <script src="~/Scripts/angular-chart.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var elems = document.querySelectorAll('select');
+            if (typeof M !== 'undefined' && M.FormSelect) {
+                var elems_select = document.querySelectorAll('select:not(.browser-default)');
+                M.FormSelect.init(elems_select);
+
+                var elems = document.querySelectorAll('.datepicker');
+                M.Datepicker.init(elems);
+            }
         });
     </script>
 </body>

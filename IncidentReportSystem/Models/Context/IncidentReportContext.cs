@@ -1,4 +1,5 @@
-﻿using IncidentReportSystem.Models.Maps;
+﻿using IncidentReportSystem.Models.Mappings;
+using IncidentReportSystem.Models.Maps;
 using IncidentReportSystem.Models.Tables;
 using System;
 using System.Collections.Generic;
