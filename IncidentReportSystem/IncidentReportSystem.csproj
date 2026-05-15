@@ -150,6 +150,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ChartModels.cs" />
     <Compile Include="Models\Context\IncidentReportContext.cs" />
     <Compile Include="Models\Maps\tbl_account_statuses_map.cs" />
     <Compile Include="Models\Maps\tbl_assignments_map.cs" />

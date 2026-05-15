@@ -58,6 +58,83 @@ namespace IncidentReportingSystem.Controllers
             catch (Exception ex) { return $"System Error: {ex.Message}"; }
         }
 
+        // ==========================================
+        // ADMIN: MANAGE USERS LOGIC
+        // ==========================================
+        [HttpGet]
+        public JsonResult GetAllUsersList()
+        {
+            try
+            {
+                using (var connect = new IncidentReportContext())
+                {
+                    var users = (from u in connect.tbl_users
+                                 join r in connect.tbl_roles on u.RoleID equals r.RoleID
+                                 select new
+                                 {
+                                     u.UserID,
+                                     u.FirstName,
+                                     u.LastName,
+                                     u.Username,
+                                     u.PhoneNumber,
+                                     u.Address,
+                                     u.RoleID,
+                                     RoleName = r.RoleName
+                                 }).ToList();
+                    return Json(users, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex) { return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet); }
+        }
+
+        [HttpPost]
+        public string AdminUpdateUser(tbl_users_model userData)
+        {
+            try
+            {
+                using (var connect = new IncidentReportContext())
+                {
+                    var user = connect.tbl_users.FirstOrDefault(x => x.UserID == userData.UserID);
+                    if (user != null)
+                    {
+                        user.FirstName = userData.FirstName;
+                        user.LastName = userData.LastName;
+                        user.PhoneNumber = userData.PhoneNumber;
+                        user.Address = userData.Address;
+                        user.RoleID = userData.RoleID;
+                        connect.SaveChanges();
+                        return "Success";
+                    }
+                    return "User not found.";
+                }
+            }
+            catch (Exception ex) { return $"System Error: {ex.Message}"; }
+        }
+
+        [HttpPost]
+        public string AdminDeleteUser(tbl_users_model userData)
+        {
+            try
+            {
+                using (var connect = new IncidentReportContext())
+                {
+                    var user = connect.tbl_users.FirstOrDefault(x => x.UserID == userData.UserID);
+                    if (user != null)
+                    {
+                        connect.tbl_users.Remove(user);
+                        connect.SaveChanges();
+                        return "Success";
+                    }
+                    return "User not found.";
+                }
+            }
+            catch (Exception ex) { return $"Action Blocked: This user has existing incident records in the database. (Error: {ex.Message})"; }
+        }
+
+
+        // ==========================================
+        // DYNAMIC CARDS & GENERAL DATA
+        // ==========================================
         [HttpGet]
         public JsonResult GetCardsStatus()
         {
@@ -145,6 +222,119 @@ namespace IncidentReportingSystem.Controllers
             catch (Exception ex) { return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet); }
         }
 
+        // ==========================================
+        // DYNAMIC CHARTS 
+        // ==========================================
+        [HttpGet]
+        public JsonResult GetPieGraph()
+        {
+            try
+            {
+                using (var connect = new IncidentReportContext())
+                {
+                    var roles = connect.tbl_roles.ToList();
+
+                    PieChartModel pie_chart = new PieChartModel();
+                    pie_chart.labels = new List<string>();
+                    pie_chart.data = new List<int>();
+
+                    foreach (var role in roles)
+                    {
+                        int count = connect.tbl_users.Count(x => x.RoleID == role.RoleID);
+                        if (count > 0)
+                        {
+                            pie_chart.labels.Add(role.RoleName);
+                            pie_chart.data.Add(count);
+                        }
+                    }
+
+                    return Json(pie_chart, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex) { return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet); }
+        }
+
+        [HttpGet]
+        public JsonResult GetLineGraph()
+        {
+            try
+            {
+                using (var connect = new IncidentReportContext())
+                {
+                    string[] month_array = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                    var status_list = connect.tbl_incident_statuses.ToList();
+                    List<int> month_list = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+
+                    ChartModel line_chart = new ChartModel();
+                    line_chart.labels = new List<string>();
+                    line_chart.series = new List<string>();
+                    line_chart.data = new List<List<int>>();
+
+                    foreach (var month in month_list)
+                    {
+                        line_chart.labels.Add(month_array[month - 1]);
+                    }
+
+                    foreach (var status in status_list)
+                    {
+                        line_chart.series.Add(status.StatusName);
+                        List<int> temp_data = new List<int>();
+
+                        foreach (var month in month_list)
+                        {
+                            int count = connect.tbl_incidents.Count(x => x.StatusID == status.StatusID && x.CreatedAt.Month == month);
+                            temp_data.Add(count);
+                        }
+                        line_chart.data.Add(temp_data);
+                    }
+
+                    return Json(line_chart, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex) { return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet); }
+        }
+
+        [HttpGet]
+        public JsonResult GetBarGraph()
+        {
+            try
+            {
+                using (var connect = new IncidentReportContext())
+                {
+                    string[] month_array = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                    var category_list = connect.tbl_incident_categories.ToList();
+                    List<int> month_list = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+
+                    ChartModel bar_chart = new ChartModel();
+                    bar_chart.labels = new List<string>();
+                    bar_chart.series = new List<string>();
+                    bar_chart.data = new List<List<int>>();
+
+                    foreach (var month in month_list)
+                    {
+                        bar_chart.labels.Add(month_array[month - 1]);
+                    }
+
+                    foreach (var category in category_list)
+                    {
+                        bar_chart.series.Add(category.CategoryName);
+                        List<int> temp_data = new List<int>();
+
+                        foreach (var month in month_list)
+                        {
+                            int count = connect.tbl_incidents.Count(x => x.CategoryID == category.CategoryID && x.CreatedAt.Month == month);
+                            temp_data.Add(count);
+                        }
+                        bar_chart.data.Add(temp_data);
+                    }
+
+                    return Json(bar_chart, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex) { return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet); }
+        }
+
+        // ==========================================
         [HttpPost]
         public string SubmitIncidentReport(tbl_incidents_model incidentData)
         {
