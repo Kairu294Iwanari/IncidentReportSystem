@@ -1,13 +1,11 @@
 ﻿app.controller("IncidentReportSystemController", function ($scope, $timeout, IncidentReportSystemService) {
 
-    // --- CHART VARIABLES & OPTIONS ---
     $scope.chartOptionsPie = { responsive: true, legend: { display: true, position: 'bottom' } };
     $scope.chartOptionsLineBar = { responsive: true, legend: { display: true, position: 'bottom' }, scales: { yAxes: [{ ticks: { beginAtZero: true, stepSize: 1 } }] } };
     $scope.pieLabels = []; $scope.pieData = [];
     $scope.lineLabels = []; $scope.lineSeries = []; $scope.lineData = [];
     $scope.barLabels = []; $scope.barSeries = []; $scope.barData = [];
 
-    // --- DASHBOARD VARIABLES ---
     $scope.showLogin = false;
     $scope.currentUser = null;
     $scope.cardData = [];
@@ -17,16 +15,13 @@
     $scope.statusList = [];
     $scope.selectedIncident = null;
 
-    // --- RESIDENT VARIABLES ---
     $scope.submitted = false;
     $scope.reportSubmitted = false;
     $scope.showReportForm = false;
 
-    // --- AUTH VARIABLES ---
     $scope.loginUsername = "";
     $scope.loginPassword = "";
 
-    // --- ADMIN SPECIFIC VARIABLES ---
     $scope.currentAdminView = 'overview';
     $scope.allUsersList = [];
     $scope.userFilter = '';
@@ -39,9 +34,6 @@
         { RoleID: 2, RoleName: 'Barangay Official' }
     ];
 
-    // ==========================================
-    // INITIALIZATION
-    // ==========================================
     $scope.initialRun = function () {
         $scope.currentUser = IncidentReportSystemService.getCurrentUser();
         var currentPath = window.location.pathname.toLowerCase();
@@ -60,9 +52,6 @@
         }
     };
 
-    // ==========================================
-    // ADMIN LOGIC (SIDEBAR, USERS, GRAPHS)
-    // ==========================================
     $scope.switchAdminView = function (view) {
         $scope.currentAdminView = view;
         if (view === 'users') { $scope.fetchAllUsers(); }
@@ -143,9 +132,6 @@
         }).catch(function () { $scope.barData = []; });
     };
 
-    // ==========================================
-    // RESIDENT & OFFICIAL LOGIC (RESTORED)
-    // ==========================================
     $scope.toggleReportForm = function () {
         $scope.showReportForm = !$scope.showReportForm;
         if (!$scope.showReportForm) $scope.clearReportFields();
@@ -197,9 +183,6 @@
         });
     };
 
-    // ==========================================
-    // GLOBAL DATA FETCHING
-    // ==========================================
     $scope.fetchDashboardData = function () {
         IncidentReportSystemService.getDashboardDataService().then(function (response) {
             if (response && response.data && !response.data.error) {
@@ -228,9 +211,6 @@
         });
     };
 
-    // ==========================================
-    // AUTHENTICATION (LOGIN, REGISTER, LOGOUT)
-    // ==========================================
     $scope.loginFunc = function () {
         if (!$scope.loginUsername || !$scope.loginPassword) { Swal.fire({ title: "Missing Fields", icon: "warning" }); return; }
         var loginData = { Username: $scope.loginUsername, PasswordHash: $scope.loginPassword };

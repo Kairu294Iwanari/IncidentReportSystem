@@ -58,9 +58,6 @@ namespace IncidentReportingSystem.Controllers
             catch (Exception ex) { return $"System Error: {ex.Message}"; }
         }
 
-        // ==========================================
-        // ADMIN: MANAGE USERS LOGIC
-        // ==========================================
         [HttpGet]
         public JsonResult GetAllUsersList()
         {
@@ -131,10 +128,6 @@ namespace IncidentReportingSystem.Controllers
             catch (Exception ex) { return $"Action Blocked: This user has existing incident records in the database. (Error: {ex.Message})"; }
         }
 
-
-        // ==========================================
-        // DYNAMIC CARDS & GENERAL DATA
-        // ==========================================
         [HttpGet]
         public JsonResult GetCardsStatus()
         {
@@ -222,9 +215,6 @@ namespace IncidentReportingSystem.Controllers
             catch (Exception ex) { return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet); }
         }
 
-        // ==========================================
-        // DYNAMIC CHARTS 
-        // ==========================================
         [HttpGet]
         public JsonResult GetPieGraph()
         {
@@ -334,7 +324,6 @@ namespace IncidentReportingSystem.Controllers
             catch (Exception ex) { return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet); }
         }
 
-        // ==========================================
         [HttpPost]
         public string SubmitIncidentReport(tbl_incidents_model incidentData)
         {
