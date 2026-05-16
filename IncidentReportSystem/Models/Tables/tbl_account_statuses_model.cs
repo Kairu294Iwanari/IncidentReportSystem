@@ -10,5 +10,7 @@ namespace IncidentReportSystem.Models.Tables
         public int AccountStatusID { get; set; }
 
         public string StatusName { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }

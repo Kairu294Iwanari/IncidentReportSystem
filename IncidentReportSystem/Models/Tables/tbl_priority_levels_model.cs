@@ -9,6 +9,8 @@ namespace IncidentReportSystem.Models.Tables
     {
         public int PriorityID { get; set; }
         public string PriorityName { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
     }
 }

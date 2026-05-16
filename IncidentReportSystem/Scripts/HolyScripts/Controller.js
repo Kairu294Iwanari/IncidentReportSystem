@@ -1,10 +1,16 @@
 ﻿app.controller("IncidentReportSystemController", function ($scope, $timeout, IncidentReportSystemService) {
 
     $scope.chartOptionsPie = { responsive: true, legend: { display: true, position: 'bottom' } };
-    $scope.chartOptionsLineBar = { responsive: true, legend: { display: true, position: 'bottom' }, scales: { yAxes: [{ ticks: { beginAtZero: true, stepSize: 1 } }] } };
-    $scope.pieLabels = []; $scope.pieData = [];
-    $scope.lineLabels = []; $scope.lineSeries = []; $scope.lineData = [];
-    $scope.barLabels = []; $scope.barSeries = []; $scope.barData = [];
+    $scope.chartOptionsLineBar = {
+        responsive: true,
+        legend: { display: true, position: 'bottom' },
+        scales: { yAxes: [{ ticks: { beginAtZero: true, stepSize: 1 } }] },
+        elements: { line: { tension: 0.3 }, point: { radius: 4, hoverRadius: 6 } }
+    };
+
+    $scope.pieLabels = []; $scope.pieData = []; $scope.pieColors = [];
+    $scope.lineLabels = []; $scope.lineSeries = []; $scope.lineData = []; $scope.lineColors = [];
+    $scope.barLabels = []; $scope.barSeries = []; $scope.barData = []; $scope.barColors = [];
 
     $scope.showLogin = false;
     $scope.currentUser = null;
@@ -14,13 +20,6 @@
     $scope.prioritiesList = [];
     $scope.statusList = [];
     $scope.selectedIncident = null;
-
-    $scope.submitted = false;
-    $scope.reportSubmitted = false;
-    $scope.showReportForm = false;
-
-    $scope.loginUsername = "";
-    $scope.loginPassword = "";
 
     $scope.currentAdminView = 'overview';
     $scope.allUsersList = [];
@@ -113,6 +112,7 @@
                 if ($scope.userStats.Total > 0) {
                     $scope.pieLabels = ["Residents", "Officials"];
                     $scope.pieData = [$scope.userStats.Residents, $scope.userStats.Officials];
+                    $scope.pieColors = ['#22c55e', '#facc15'];
                 } else { $scope.pieData = []; }
             }
         });
@@ -122,12 +122,32 @@
         IncidentReportSystemService.getLineGraphService().then(function (response) {
             if (response && response.data && Array.isArray(response.data.labels)) {
                 $scope.lineLabels = response.data.labels; $scope.lineSeries = response.data.series; $scope.lineData = response.data.data;
+
+                $scope.lineColors = $scope.lineSeries.map(function (s) {
+                    var lower = s.toLowerCase();
+                    if (lower.includes('resolved')) return '#22c55e';
+                    if (lower.includes('dismissed')) return '#ff4040';
+                    if (lower.includes('pending')) return '#facc15';
+                    if (lower.includes('progress')) return '#38bdf8';
+                    return '#94a3b8';
+                });
             } else { $scope.lineData = []; }
         }).catch(function () { $scope.lineData = []; });
 
         IncidentReportSystemService.getBarGraphService().then(function (response) {
             if (response && response.data && Array.isArray(response.data.labels)) {
                 $scope.barLabels = response.data.labels; $scope.barSeries = response.data.series; $scope.barData = response.data.data;
+
+                $scope.barColors = $scope.barSeries.map(function (c) {
+                    var lower = c.toLowerCase();
+                    if (lower.includes('water')) return '#38bdf8';
+                    if (lower.includes('street') || lower.includes('light')) return '#facc15';
+                    if (lower.includes('securit') || lower.includes('crime')) return '#ef4444';
+                    if (lower.includes('noise')) return '#f97316';
+                    if (lower.includes('garbage')) return '#8b5cf6';
+                    if (lower.includes('road')) return '#64748b';
+                    return '#94a3b8';
+                });
             } else { $scope.barData = []; }
         }).catch(function () { $scope.barData = []; });
     };
